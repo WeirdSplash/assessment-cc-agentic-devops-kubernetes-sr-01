@@ -18,8 +18,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '15'
-      - run: npm ci
-        working-directory: codebase/rdicidr-0.1.0
+      - run: |
+          echo "=== pwd ==="
+          pwd
+          echo "=== ls workspace ==="
+          ls -la
+          echo "=== ls app dir ==="
+          ls -la codebase/rdicidr-0.1.0/
+          echo "=== npm ci ==="
+          cd codebase/rdicidr-0.1.0 && npm ci
       - uses: actions/cache/save@v4
         with:
           path: codebase/rdicidr-0.1.0/node_modules
