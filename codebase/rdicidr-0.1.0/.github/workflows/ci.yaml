@@ -10,10 +10,6 @@ on:
     branches:
       - main
 
-defaults:
-  run:
-    working-directory: codebase/rdicidr-0.1.0
-
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -23,6 +19,7 @@ jobs:
         with:
           node-version: '15'
       - run: npm ci
+        working-directory: codebase/rdicidr-0.1.0
       - uses: actions/cache/save@v5
         with:
           path: codebase/rdicidr-0.1.0/node_modules
@@ -41,7 +38,9 @@ jobs:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
       - run: npm run lint
+        working-directory: codebase/rdicidr-0.1.0
       - run: npm run prettier
+        working-directory: codebase/rdicidr-0.1.0
 
   test:
     needs: install
@@ -56,6 +55,7 @@ jobs:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
       - run: npm test -- --watchAll=false
+        working-directory: codebase/rdicidr-0.1.0
 
   build:
     needs: install
@@ -70,3 +70,4 @@ jobs:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
       - run: npm run build
+        working-directory: codebase/rdicidr-0.1.0
