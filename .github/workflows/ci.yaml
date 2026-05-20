@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '15'
+      - run: pwd && ls -la
       - run: npm ci
         working-directory: codebase/rdicidr-0.1.0
       - uses: actions/cache/save@v5
