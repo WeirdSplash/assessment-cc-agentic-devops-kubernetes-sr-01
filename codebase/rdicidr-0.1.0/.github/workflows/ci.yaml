@@ -14,13 +14,13 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '15'
       - run: npm ci
         working-directory: codebase/rdicidr-0.1.0
-      - uses: actions/cache/save@v5
+      - uses: actions/cache/save@v4
         with:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
@@ -29,11 +29,11 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '15'
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v4
         with:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
@@ -46,11 +46,11 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '15'
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v4
         with:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
@@ -61,13 +61,22 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '15'
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v4
         with:
           path: codebase/rdicidr-0.1.0/node_modules
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
       - run: npm run build
+        working-directory: codebase/rdicidr-0.1.0
+
+  docker:
+    needs: [lint, test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t rdicidr:${{ github.sha }} .
         working-directory: codebase/rdicidr-0.1.0
